@@ -1,0 +1,76 @@
+정보시스템 구축
+분석 -> 설계 -> 구현 -> 테스팅 -> 유지보수 (5단계)
+
+1.분석 단계 (구현하고자 하는 프로젝트의 첫 단계)
+ 시스템 분석 또는 요구사항 분석
+ What (현재 우리가 무엇을 할 것인지를 결정)
+ - 조사 (논문, 기술서적, 회사에서 제공, 기술블로그에서 발췌 - 반드시 참고문헌에 대한 근거)
+ - 산출물 작업
+  요구사항 분석서, API 명세서, 클래스다이어그램, 유즈케이스, 시퀀스
+
+2. 설계 (시스템 설계, 프로그램 설계)
+ 어떻게(HOW) 구현할 것인지 결정
+ 결과 문서들 ...... 프로그래머들(코더) 에게 넘겨 주면 코드 생성
+=======================================================50% 끝
+데이터베이스 모델링에 대한 필수 용어
+데이터베이스 모델링이란?
+ 현실세계에서 사용되는 데이터를 MYSQL에 어떻게 옮겨 놓을 것인지를 결정하는 과정
+
+사람을 MySQL에 어떻게 넣을 것인가?
+ 객체를 만들면 된다.
+ 사람을 나타낼 수 있는 특성(속성)들을 추출해서 MYSQL에 저장 하면 된다.
+ 저장할 정보를 테이블 단위로 저장한다.
+ 테이블은 형식에 맞추어서 저장해야 한다.
+
+ - 데이터 : 하나하나의 현실세계에서 존재하는 단편적인 정보
+          체계화 되지 못한 상태의 정보
+
+ - 테이블 : 회원이나 제품의 데이터를 입력하기 위한 표 형태로 표현 한 것
+
+ - 데이터베이스(DB) : 테이블이 저장되는 저장소
+
+ -DBMS(Database Management System) : MySQL을 사용한다. 소프트웨어
+
+ - 테이블 구성
+ 열(column 컬럼,필드) : 열 이름은 각 테이블에서 중복되지 않고, 고유해야 한다
+ 데이터 형식 : 열의 형식
+ 행(=row 로우 = 레코드) : 실질적인 정보의 단위
+ 기본키(Primary key) : 기본열은 각 행을 구분하는 유일한 열의 의미
+ 외래키(Foreign key) : 두 테이블의 관계를 맺어주는 키(열)
+
+ 쇼핑몰데이터 베이스는 회원 도메인과 제품 도메인으로 구성되어 있다.
+
+ -- 요구사항
+ ssg계정에서
+ 1. shopdb 데이터베이스를 생성해 주세요.
+ 2. 회원테이블(memberTBL)
+   memberID 문자열 8글자 널을 하지 않음
+   memberName 문자열 10글자 널을 허용하지 않음
+   memberAddress 문자열20 글자 널 허용
+
+ 3. 제품테이블(productTBL)
+  productName 문자 (4글자) 널 허용하지 않음
+  cost 숫자(INT) 널 허용하지 않음
+  makeDate 날짜(Date) 널 허용
+
+  local instance
+  create schema shopdb;
+  grant all privileges on shopdb.* to ssg@localhost;
+  commit;
+  show databases;
+
+  use shopdb;
+  create table memberTBL(
+      memberID varchar(8) not null,
+      memberName varchar(10) not null,
+      memberAddress varchar(20),
+      primary key(memberID)
+  );
+
+  create table productTBL(
+      productID int auto_increment,
+      productName varchar(4) not null,
+      cost int not null,
+      makeDate date,
+      primary key(productID)
+  );
