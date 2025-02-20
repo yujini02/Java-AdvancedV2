@@ -1,0 +1,52 @@
+primary key(기본키) : 식별, 제약조건 ) unique, not null
+
+Join
+조인의 개념
+조인(Join)
+두 개 이상의 테이블을 연결하여 데이터를 검색하는 방법
+ANSI SQL 조인 방식
+ SELECT *
+ FROM 테이블A
+ 조인의 방식[CROSS|INNER|OUTER] JOIN 테이블B
+ ON 조인_조건
+ WHERE 기타_조건;
+NON-ANSI SQL 조인 방식
+ SELECT *
+ FROM 테이블A
+      ,테이블B
+ WHERE 조인_조건 및 기타_조건;
+ 조인의 종류 : 크로스 조인, 내부 조인, 외부 조인, 셀프 조인
+
+ 1. 크로스 조인(Cross Join)
+  한쪽 테이블의 각 행마다 다른 쪽 테이블의 모든 행이 한 번씩 각각 매칭되는 조인을 의미
+  크로스 조인의 결과 행의 개수: 테이블A 행의 개수 x 테이블B 행의 개수
+ ANSI SQL 조인형식
+ SELECT *
+ FROM 테이블A
+ [CROSS] JOIN 테이블B
+ WHERE 기타_조건;
+
+ 2. 내부 조인 (Inner Join) - 가장 많이 쓰임
+  각 테이블에서 조인 조건에 일치되는 데이터만 가져오는 조인
+  내부 조인에는 이퀴 조인과 비이퀴 조인이 있음
+  이퀴 조건(Equi Join) : 조인 조건에 = 연산자를 사용함
+  비이퀴 조인(Non-Equi Join) : 조인 조건에 = 연산자 이외의 비교 연산자를 사용함
+  ANSI SQL 조인형식
+   SELECT *
+   FROM 테이블A
+   [INNER] JOIN 테이블B
+   ON 조인_조건
+   WHERE 기타_조건;
+
+3. 외부조인
+ LEFT/RIGHT 외부 조인
+ 외부 조인은 조인할 테이블명 사이에 LEFT 또는 RIGHT와 함께 OUTER JOIN을 넣음
+  SELECT *
+  FROM 테이블A
+  LEFT|RIGHT[OUTER] JOIN 테이블B
+  ON 조인_조건
+  WHERE 기타_조건;
+
+4. 셀프 조인
+ 동일한 테이블 내에서 한 컬럼이 다른 컬럼을 참조하는 조인
+
