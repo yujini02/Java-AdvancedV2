@@ -10,4 +10,12 @@ public class Board {
     private String bcontent;
     private String bwriter;
     private Date date;
+
+    public Board(int bno, String bwriter, String btitle, String bcontent){
+        this.bno = bno;
+        this.bwriter = bwriter;
+        this.btitle = btitle;
+        this.bcontent = bcontent;
+        this.date = new Date();
+    }
 }
