@@ -1,13 +1,21 @@
-package jdbc.homework.boards;
+package jdbc.homework.boards.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import jdbc.homework.boards.dao.BoardDao;
+import jdbc.homework.boards.dao.BoardDaoImpl;
+import jdbc.homework.boards.vo.Board;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
-public class BoardService {
-    private final BoardDao boardDao = new BoardDao();
+public class BoardServiceImpl implements BoardService{
+    private final BoardDao boardDao;
 
+    public BoardServiceImpl(){
+        this.boardDao = BoardDaoImpl.getInstance();
+    }
+
+    @Override
     public void createBoard(String title, String content, String writer) {
         Board board = new Board();
         board.setBtitle(title);
@@ -18,6 +26,7 @@ public class BoardService {
         boardDao.insertBoard(board);
     }
 
+    @Override
     public void listBoards() {
         System.out.println("[게시물 목록]");
         System.out.println("-------------------------------------------------");
@@ -31,6 +40,7 @@ public class BoardService {
         }
     }
 
+    @Override
     public void readBoard(int bno) {
         Board board = boardDao.getBoardById(bno);
         if (board == null) {
@@ -60,6 +70,7 @@ public class BoardService {
         }
     }
 
+    @Override
     public void updateBoard(int bno) {
         Scanner sc = new Scanner(System.in);
         System.out.println("[수정 내용 입력]");
@@ -74,17 +85,17 @@ public class BoardService {
         listBoards();
     }
 
+    @Override
     public void deleteBoard(int bno) {
         boardDao.deleteBoard(bno);
         listBoards();
     }
 
+    @Override
     public void clearBoards() {
         boardDao.clearAllBoards();
     }
-
-    private String getCurrentDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(new Date());
+    private LocalDateTime getCurrentDate() {
+        return LocalDateTime.now();
     }
 }

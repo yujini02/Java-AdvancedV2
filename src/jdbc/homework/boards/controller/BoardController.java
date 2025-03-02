@@ -1,12 +1,15 @@
-package jdbc.homework.boards;
+package jdbc.homework.boards.controller;
+
+import jdbc.homework.boards.service.BoardServiceImpl;
 
 import java.util.Scanner;
 
 public class BoardController {
-    private final Scanner sc = new Scanner(System.in);
-    private final BoardService boardService = new BoardService();
 
-    public void start() {
+    private final BoardServiceImpl boardService = new BoardServiceImpl();
+    private final Scanner sc = new Scanner(System.in);
+
+    public void list() {
         while (true) {
             System.out.println();
             System.out.println("--------------------------------");

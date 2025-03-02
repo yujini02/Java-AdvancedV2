@@ -1,25 +1,25 @@
-package jdbc.homework.boards;
+package jdbc.homework.boards.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * packageName   : jdbc.advanced.users
+ * packageName   : jdbc.homework.boards
  * fileName      : DBUtil
- * author        : a
- * date          : 2025-02-28
+ * author        : j
+ * date          : 2025-03-01
  * description   : 데이터베이스 연결 작업 클래스
  * =================================================
  * DATE             AUTHOR             NOTE
  * -------------------------------------------------
- * 2025-02-28        j
+ * 2025-03-01        j
  */
 public class DBUtil {
 
     /**
      * Gets connection
-     * @return
+     * @return null
      */
     public static Connection getConnection() {
         try {
