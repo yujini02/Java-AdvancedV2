@@ -1,17 +1,130 @@
 저장 프로시저 사용 이유
 복잡한 쿼리를 이 프로시저 내부에 저장하고
 호출하여 사용함으로써 다양한 이점을 누릴 수 있다.
- 내가 원하는 묶음단위의 쿼리셋을 만들 수 있다.
 - 절차적 기능 구현
-- 유지, 보수 유용
-- 트래픽 감소
+- 유지, 보수
+- 트랙픽 감소
 - 보안
 
 프로시저 사용시 주의사항
 1. ALTER 문으로 저장프로시저의 매개변수나 바디의 코드를 수정할 수 없다.
    삭제 후 다시 생성하는 방식
 
-2. 기본 반환값이 없다. RETURN 문을 사용할 수 없다.
+2. 기본 반환값이 없다.  RETURN 문을 사용할 수 없다.
 3. IN (입력매개변수)와 함께 정의된 매개변수는 입력 전용매개변수로 사용
 4. OUT (출력매개변수) 와 함께 정의된 매개변수는 출력 전용 매개변수로 사용
 5. INOUT (입력과출력이 가능한 매개변수) 와 함께 정의된 매개변수는 입출력 전용 매개변수로 사용된다.
+
+use sakila;
+
+DELIMITER $$
+CREATE PROCEDURE sakilaCustomerCount() -- sakila데이터베이스의 고객명수 확인 프로시저
+BEGIN
+    DECLARE customer_cnt INT;
+    DECLARE add_number INT; -- 변수 선언
+
+    SET customer_cnt = 0;
+    SET add_number = 10;
+
+    SET customer_cnt = (SELECT count(*) FROM customer);
+
+    SELECT customer_cnt;
+
+end $$
+DELIMITER ;
+
+call sakilaCustomerCount(); -- 저장 프로시저 호출( 실행)
+
+show create procedure sakilaCustomerCount; -- 저장 프로시저 내용 확인
+
+DROP procedure sakilaCustomerCount;
+
+
+-- 제어문 IF
+-- IF 조건식 THEN (조건식이 참일때 ) 실행 할 식
+-- ELSE (조건식이 거짓일때) 실행 할 식
+-- END IF;
+
+SELECT store_id, IF(store_id = 1, '일', '이') AS one_two
+FROM customer
+GROUP BY store_id;
+
+
+DROP PROCEDURE IF EXISTS customerif;
+
+DELIMITER $$
+CREATE procedure customer_if(customer_id_input INT)
+BEGIN
+    DECLARE store_id_i INT;
+    DECLARE s_id_one INT;
+    DECLARE s_id_two INT;
+
+    SET store_id_i = (SELECT store_id FROM customer WHERE customer_id = customer_id_input);
+
+    IF store_id_i = 1 THEN
+        SET s_id_one = 1;
+    ELSE
+        SET s_id_two = 2;
+    END IF;
+
+    SELECT store_id_i, s_id_one, s_id_two;
+
+end $$
+DELIMITER ;
+
+
+CALL customer_if(1);
+
+-- CASE 문  여러 가지 조건 가운데 하나를 선택해서 실행해야 하는 경우 적용  다중분기문
+
+#   CASE
+#   WHEN 조건 1 THEN 실행할 명령문
+#   WHEN 조건 2 THEN 실행할 명령문
+#   WHEN 조건 3 THEN 실행할 명령문
+#   WHEN 조건 4 THEN 실행할 명령문
+#   ELSE 실행할 명령문
+#   END
+
+
+-- payment 테이블에서   amount의 합계가 150일 경우 VVIP, 120경우 VIP, 100경우 GOLD ,80 경우 SILVER,  나머지 Bronze
+
+
+SELECT customer_id,
+       sum(amount) as amount,
+       CASE
+           WHEN SUM(amount) >= 150 THEN 'VVIP'
+           WHEN SUM(amount) >= 1250 THEN 'VIP'
+           WHEN SUM(amount) >= 100 THEN 'GOLD'
+           WHEN SUM(amount) >= 80 THEN 'SILVER'
+           ELSE 'BRONZE'
+           END     AS customer_level
+FROM payment
+GROUP BY customer_id;
+
+
+DELIMITER $$
+CREATE procedure customer_level_case(customer_id_input INT)
+BEGIN
+    DECLARE customer_level varchar(10);
+    DECLARE amount_sum float;
+
+
+    SET amount_sum = (SELECT sum(amount) from payment where customer_id = customer_id_input group by customer_id);
+
+
+    CASE
+        WHEN amount_sum >= 150 THEN SET customer_level = 'VVIP';
+        WHEN amount_sum >= 1250 THEN SET customer_level = 'VIP';
+        WHEN amount_sum >= 100 THEN SET customer_level = 'GOLD';
+        WHEN amount_sum >= 80 THEN SET customer_level = 'SILVER';
+        ELSE SET customer_level = 'BRONZE';
+        end CASE;
+
+      SELECT customer_id_input as customer_id , amount_sum, customer_level;
+
+    END $$
+DELIMITER ;
+
+call customer_level_case(59);
+
+--

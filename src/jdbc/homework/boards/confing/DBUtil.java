@@ -1,4 +1,4 @@
-package jdbc.homework.boards.util;
+package jdbc.homework.boards.confing;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

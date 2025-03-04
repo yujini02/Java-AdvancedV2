@@ -1,6 +1,6 @@
 package jdbc.homework.boards.dao;
 
-import jdbc.homework.boards.util.DBUtil;
+import jdbc.homework.boards.confing.DBUtil;
 import jdbc.homework.boards.vo.Board;
 
 import java.sql.*;
