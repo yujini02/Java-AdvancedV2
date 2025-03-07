@@ -419,7 +419,7 @@ CREATE TRIGGER orderTrg  -- 트리거 이름
     AFTER INSERT
     ON orderTBL -- 트리거를 부착할 테이블
     FOR EACH ROW
-BEGIN
+BEGIN신세계무역
     UPDATE prodTbl SET account = account - NEW.orderamount
     WHERE prodName = NEW.prodName ;
 END //
